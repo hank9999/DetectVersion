@@ -1,0 +1,21 @@
+name: DetectVersion
+version: ${project.version}
+main: com.github.hank9999.detectversion.DetectVersion
+authors: [hank9999]
+api-version: 1.13
+description: Detect Client Version
+depends: [ViaVersion]
+
+commands:
+  getversion:
+    aliases: [gv]
+    description: Get Player's Client Version.
+
+  detectversion-reload:
+    aliases: [dv-reload]
+    description: Reload DetectVersion Config.
+
+permissions:
+  DetectVersion.admin:
+    description: DetectVersion main permission.
+    default: op

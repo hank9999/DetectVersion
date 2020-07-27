@@ -1,0 +1,31 @@
+# ============================================================
+# Versions' Name Goto https://wiki.vg/Protocol_version_numbers
+# Support from 301 to 743 (16w32a to 20w30a)
+
+# Some Versions Name Changed
+# 20w14Infinity => (20w14∞)
+# 1.12.2-pre => (1.12.2-pre1 and 1.12.2-pre2)
+# 1.11.x_or_16w50a => (1.11.2, 1.11.1 and 16w50a)
+# 16w43a_or_44a => (16w44a and 16w43a)
+# 1.14.3-Combat => (1.14.3 - Combat Test)
+# ============================================================
+
+RecommendedVersion: '1.13.2'
+
+# Whether to detect when the player joins the server
+DetectWhenJoin: true
+
+# If the version does not match, what to do next.
+# Commands
+# Messages
+VersionNotMatchFunction: 'Messages'
+
+# If Doing next is Command
+# (%playerName% => Player Name)
+# (%playerVersion% => Player Version)
+Commands: []
+
+# If Doing next is Message
+# (%playerName% => Player Name)
+# (%playerVersion% => Player Version)
+Messages: []
