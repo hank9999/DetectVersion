@@ -19,6 +19,7 @@ public class MainCommand implements TabExecutor {
 
             if (!commandSender.hasPermission("DetectVersion.admin")) {
                 commandSender.sendMessage(Libs.color("&6[DetectVersion] &cYou do not have permission to use this command"));
+                return false;
             }
 
             if (strings.length == 0) {
