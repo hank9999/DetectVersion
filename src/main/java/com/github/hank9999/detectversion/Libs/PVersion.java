@@ -7,6 +7,7 @@ package com.github.hank9999.detectversion.Libs;
     Date: 2020.07.03 20:40:00
     Modify:
         - 2020.07.27 12:40:00 Added Support from 740 to 743
+        - 2020.08.18 18:30:00 Added Support from 744 to 751
 
     Support from 301 to 743 (16w32a to 20w30a)
 
@@ -24,6 +25,12 @@ package com.github.hank9999.detectversion.Libs;
 
 public enum PVersion {
 
+    V1_16_2(751, "1.16.2"),
+    V1_16_2rc2(750, "1.16.2-rc2"),
+    V1_16_2rc1(749, "1.16.2-rc1"),
+    V1_16_2pre3(748, "1.16.2-pre3"),
+    V1_16_2pre2(746, "1.16.2-pre2"),
+    V1_16_2pre1(744, "1.16.2-pre1"),
     V20w30a(743, "20w30a"),
     V20w29a(741, "20w29a"),
     V20w28a(740, "20w28a"),
