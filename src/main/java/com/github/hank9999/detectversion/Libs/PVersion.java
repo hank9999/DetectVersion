@@ -8,8 +8,9 @@ package com.github.hank9999.detectversion.Libs;
     Modify:
         - 2020.07.27 12:40:00 Added Support from 740 to 743
         - 2020.08.18 18:30:00 Added Support from 744 to 751
+        - 2020.10.24 9:50 Added Support from 1.16.3-rc1 to 1.16.4-pre2
 
-    Support from 301 to 743 (16w32a to 20w30a)
+    Support from 16w32a to 1.16.4-pre2
 
     Others:
         Because some versions have the same code (or special symbols)
@@ -24,7 +25,10 @@ package com.github.hank9999.detectversion.Libs;
  */
 
 public enum PVersion {
-
+    V1_16_4pre2(1073741826, "1.16.4-pre2"),
+    V1_16_4pre1(1073741825, "1.16.4-pre1"),
+    V1_16_3(753, "1.16.3"),
+    V1_16_3rc1(752, "1.16.3-rc1"),
     V1_16_2(751, "1.16.2"),
     V1_16_2rc2(750, "1.16.2-rc2"),
     V1_16_2rc1(749, "1.16.2-rc1"),
