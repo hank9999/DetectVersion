@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import us.myles.ViaVersion.api.Via;
+import com.viaversion.viaversion.api.Via;
 
 public class JoinListener implements Listener {
     @EventHandler
@@ -19,7 +19,14 @@ public class JoinListener implements Listener {
         String GV = PVersion.getGV(Via.getAPI().getPlayerVersion(p.getUniqueId()));
         DetectVersion.ins.getServer().broadcast(ChatColor.AQUA + p.getName() + ChatColor.YELLOW + " Joined Server" + ChatColor.WHITE + "," + ChatColor.GREEN + " Client Version: " + ChatColor.DARK_AQUA + GV, "MiaoChatTransformation.broadcast");
         DetectVersion.ins.getServer().getLogger().info(ChatColor.AQUA + p.getName() + ChatColor.YELLOW + " Joined Server" + ChatColor.WHITE + "," + ChatColor.GREEN + " Client Version: " + ChatColor.DARK_AQUA + GV);
-        if (!GV.equalsIgnoreCase(Config.RecommendedVersion)) {
+        boolean isRecommended = false;
+        for (String v : Config.RecommendedVersion) {
+            if (v.contains(GV)) {
+                isRecommended = true;
+                break;
+            }
+        }
+        if (!isRecommended) {
             if (Config.VersionNotMatchFunction.equalsIgnoreCase("Messages")) {
                 (new BukkitRunnable() {
                     public void run() {
@@ -31,7 +38,7 @@ public class JoinListener implements Listener {
                             ));
                         }
                     }
-                }).runTaskLater(DetectVersion.ins, 50L);
+                }).runTaskLater(DetectVersion.ins, Config.delay);
             }
             if (Config.VersionNotMatchFunction.equalsIgnoreCase("Commands")) {
                 (new BukkitRunnable() {
@@ -46,7 +53,7 @@ public class JoinListener implements Listener {
                             );
                         }
                     }
-                }).runTaskLater(DetectVersion.ins, 50L);
+                }).runTaskLater(DetectVersion.ins, Config.delay);
             }
         }
     }
