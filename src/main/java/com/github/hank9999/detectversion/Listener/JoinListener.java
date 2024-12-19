@@ -12,20 +12,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import com.viaversion.viaversion.api.Via;
 
+import java.util.List;
+
+import static com.github.hank9999.detectversion.Libs.Libs.GVsToString;
+
 public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         Player p = event.getPlayer();
-        String GV = PVersion.getGV(Via.getAPI().getPlayerVersion(p.getUniqueId()));
-        DetectVersion.ins.getServer().broadcast(ChatColor.AQUA + p.getName() + ChatColor.YELLOW + " Joined Server" + ChatColor.WHITE + "," + ChatColor.GREEN + " Client Version: " + ChatColor.DARK_AQUA + GV, "MiaoChatTransformation.broadcast");
-        DetectVersion.ins.getServer().getLogger().info(ChatColor.AQUA + p.getName() + ChatColor.YELLOW + " Joined Server" + ChatColor.WHITE + "," + ChatColor.GREEN + " Client Version: " + ChatColor.DARK_AQUA + GV);
-        boolean isRecommended = false;
-        for (String v : Config.RecommendedVersion) {
-            if (v.contains(GV)) {
-                isRecommended = true;
-                break;
-            }
-        }
+        List<String> GVs = PVersion.getGV(Via.getAPI().getPlayerVersion(p.getUniqueId()));
+        DetectVersion.ins.getServer().broadcast(ChatColor.AQUA + p.getName() + ChatColor.YELLOW + " Joined Server" + ChatColor.WHITE + "," + ChatColor.GREEN + " Client Version: " + ChatColor.DARK_AQUA + GVsToString(GVs), "MiaoChatTransformation.broadcast");
+        DetectVersion.ins.getServer().getLogger().info(ChatColor.AQUA + p.getName() + ChatColor.YELLOW + " Joined Server" + ChatColor.WHITE + "," + ChatColor.GREEN + " Client Version: " + ChatColor.DARK_AQUA + GVsToString(GVs));
+        boolean isRecommended = Config.RecommendedVersion.stream()
+                .anyMatch(recommendedVersion -> GVs.stream().anyMatch(recommendedVersion::contains));
         if (!isRecommended) {
             if (Config.VersionNotMatchFunction.equalsIgnoreCase("Messages")) {
                 (new BukkitRunnable() {
@@ -34,7 +33,7 @@ public class JoinListener implements Listener {
                             p.sendMessage(Libs.replacePlaceholder(
                                     message,
                                     p.getName(),
-                                    GV
+                                    GVsToString(GVs)
                             ));
                         }
                     }
@@ -48,7 +47,7 @@ public class JoinListener implements Listener {
                                     Libs.replacePlaceholder(
                                             Command,
                                             p.getName(),
-                                            GV
+                                            GVsToString(GVs)
                                     )
                             );
                         }

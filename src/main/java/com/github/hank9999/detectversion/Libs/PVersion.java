@@ -1,10 +1,17 @@
 package com.github.hank9999.detectversion.Libs;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
  /*
 
     Protocol Version Numbers to Game Version
     Another: hank9999
-    Date: 2020.07.03 20:40:00
+    Date: 2024.12.19 17:00:00
     Modify:
         - 2020.07.27 12:40:00 Added Support from 740 to 743
         - 2020.08.18 18:30:00 Added Support from 744 to 751
@@ -12,24 +19,199 @@ package com.github.hank9999.detectversion.Libs;
         - 2021.02.05 17:00 Added Support from 1.16.4-rc1 to 21w05b
         - 2021.07.04 23:00 Added Support from 21w06a to 1.17.1-pre3
         - 2022.05.07 13:25 Added Support from 1.17.1-rc1 to 22w18a
+        - 2024.12.19 17:00 Added Support from 22w19a to 1.21.4, restore some codes, check below
 
-    Support from 16w32a to 22w18a
+    Support from 16w32a to 1.12.4
 
     Others:
-        Because some versions have the same code (or special symbols)
-        So I change some versions
+        // Because some versions have the same code (or special symbols)
+        // So I change some versions
+        2024.12.19 Note: Add multiple versions for the same code support
+                         The modified codes (313, 316, 339, 754, 757) have been restored.
 
+        Because special symbols, these codes' name has been changed
         Code 709 => 20w14Infinity (20w14∞)
-        Code 339 => 1.12.2-pre (1.12.2-pre1 and 1.12.2-pre2)
-        Code 316 => 1.11.x_or_16w50a (1.11.2, 1.11.1 and 16w50a)
-        Code 313 => 16w43a_or_44a (16w44a and 16w43a)
         Code 500 => 1.14.3-Combat (1.14.3 - Combat Test)
-        Code 754 => 1.16.4_or_1.16.5 (1.16.4 and 1.16.5)
-        Code 757 => 1.18_or_1.18.1 (1.18 and 1.18.1)
+
+     HowToAddPVNumber:
+        There is a python script that can help you.
+        Data source form `https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge`
+        ```python
+        v = {}
+        data = """"""
+        for i in data.splitlines():
+            i = i.split('(')[0].strip().split('page')[0].strip()
+            if i.find('Snapshot') > -1:
+                v[i[:i.find('Snapshot')].strip()] = str(int(i[i.find('Snapshot'):].replace('Snapshot', '').strip()) + 1073741824)
+            else:
+                v[i[:i.find(' ')].strip()] = i[i.find(' '):].strip()
+
+        for k, val in v.items():
+            print('V' + k.replace('-', '').replace('.', '_') + '(' + val + ', "' + k + '"),')
+        ```
 
  */
 
 public enum PVersion {
+    V1_21_4(769, "1.21.4"),
+    V1_21_4rc3(1073742052, "1.21.4-rc3"),
+    V1_21_4rc2(1073742051, "1.21.4-rc2"),
+    V1_21_4rc1(1073742050, "1.21.4-rc1"),
+    V1_21_4pre3(1073742049, "1.21.4-pre3"),
+    V1_21_4pre2(1073742048, "1.21.4-pre2"),
+    V1_21_4pre1(1073742047, "1.21.4-pre1"),
+    V24w46a(1073742046, "24w46a"),
+    V24w45a(1073742045, "24w45a"),
+    V24w44a(1073742044, "24w44a"),
+    V1_21_3(768, "1.21.3"),
+    V1_21_2(768, "1.21.2"),
+    V1_21_2rc2(1073742043, "1.21.2-rc2"),
+    V1_21_2rc1(1073742042, "1.21.2-rc1"),
+    V1_21_2pre5(1073742041, "1.21.2-pre5"),
+    V1_21_2pre4(1073742040, "1.21.2-pre4"),
+    V1_21_2pre3(1073742039, "1.21.2-pre3"),
+    V1_21_2pre2(1073742038, "1.21.2-pre2"),
+    V1_21_2pre1(1073742037, "1.21.2-pre1"),
+    V24w40a(1073742036, "24w40a"),
+    V24w39a(1073742035, "24w39a"),
+    V24w38a(1073742034, "24w38a"),
+    V24w37a(1073742033, "24w37a"),
+    V24w36a(1073742032, "24w36a"),
+    V24w35a(1073742031, "24w35a"),
+    V24w34a(1073742030, "24w34a"),
+    V24w33a(1073742029, "24w33a"),
+    V1_21_1(767, "1.21.1"),
+    V1_21_1rc1(1073742028, "1.21.1-rc1"),
+    V1_21(767, "1.21"),
+    V1_21rc1(1073742027, "1.21-rc1"),
+    V1_21pre4(1073742026, "1.21-pre4"),
+    V1_21pre3(1073742025, "1.21-pre3"),
+    V1_21pre2(1073742024, "1.21-pre2"),
+    V1_21pre1(1073742023, "1.21-pre1"),
+    V24w21b(1073742022, "24w21b"),
+    V24w21a(1073742021, "24w21a"),
+    V24w20a(1073742020, "24w20a"),
+    V24w19b(1073742019, "24w19b"),
+    V24w19a(1073742018, "24w19a"),
+    V24w18a(1073742017, "24w18a"),
+    V1_20_6(766, "1.20.6"),
+    V1_20_6rc1(1073742016, "1.20.6-rc1"),
+    V1_20_5(766, "1.20.5"),
+    V1_20_5rc3(1073742015, "1.20.5-rc3"),
+    V1_20_5rc2(1073742014, "1.20.5-rc2"),
+    V1_20_5rc1(1073742013, "1.20.5-rc1"),
+    V1_20_5pre4(1073742012, "1.20.5-pre4"),
+    V1_20_5pre3(1073742011, "1.20.5-pre3"),
+    V1_20_5pre2(1073742010, "1.20.5-pre2"),
+    V1_20_5pre1(1073742009, "1.20.5-pre1"),
+    V24w14a(1073742008, "24w14a"),
+    V24w13a(1073742006, "24w13a"),
+    V24w12a(1073742005, "24w12a"),
+    V24w11a(1073742004, "24w11a"),
+    V24w10a(1073742003, "24w10a"),
+    V24w09a(1073742002, "24w09a"),
+    V24w07a(1073742001, "24w07a"),
+    V24w06a(1073742000, "24w06a"),
+    V24w05b(1073741999, "24w05b"),
+    V24w05a(1073741997, "24w05a"),
+    V24w04a(1073741997, "24w04a"),
+    V24w03b(1073741996, "24w03b"),
+    V24w03a(1073741995, "24w03a"),
+    V23w51b(1073741994, "23w51b"),
+    V23w51a(1073741993, "23w51a"),
+    V1_20_4(765, "1.20.4"),
+    V1_20_4rc1(1073741993, "1.20.4-rc1"),
+    V1_20_3(765, "1.20.3"),
+    V1_20_3rc1(1073741992, "1.20.3-rc1"),
+    V1_20_3pre4(1073741991, "1.20.3-pre4"),
+    V1_20_3pre3(1073741990, "1.20.3-pre3"),
+    V1_20_3pre2(1073741989, "1.20.3-pre2"),
+    V1_20_3pre1(1073741988, "1.20.3-pre1"),
+    V23w46a(1073741987, "23w46a"),
+    V23w45a(1073741986, "23w45a"),
+    V23w44a(1073741985, "23w44a"),
+    V23w43b(1073741984, "23w43b"),
+    V23w43a(1073741983, "23w43a"),
+    V23w42a(1073741981, "23w42a"),
+    V23w41a(1073741980, "23w41a"),
+    V23w40a(1073741978, "23w40a"),
+    V1_20_2(764, "1.20.2"),
+    V1_20_2rc2(1073741977, "1.20.2-rc2"),
+    V1_20_2rc1(1073741976, "1.20.2-rc1"),
+    V1_20_2pre4(1073741975, "1.20.2-pre4"),
+    V1_20_2pre3(1073741974, "1.20.2-pre3"),
+    V1_20_2pre2(1073741973, "1.20.2-pre2"),
+    V1_20_2pre1(1073741972, "1.20.2-pre1"),
+    V23w35a(1073741971, "23w35a"),
+    V23w33a(1073741970, "23w33a"),
+    V23w32a(1073741969, "23w32a"),
+    V23w31a(1073741968, "23w31a"),
+    V1_20_1(763, "1.20.1"),
+    V1_20_1rc1(1073741966, "1.20.1-rc1"),
+    V1_20(763, "1.20"),
+    V1_20rc1(1073741965, "1.20-rc1"),
+    V1_20pre7(1073741964, "1.20-pre7"),
+    V1_20pre6(1073741963, "1.20-pre6"),
+    V1_20pre5(1073741962, "1.20-pre5"),
+    V1_20pre4(1073741961, "1.20-pre4"),
+    V1_20pre3(1073741960, "1.20-pre3"),
+    V1_20pre2(1073741959, "1.20-pre2"),
+    V1_20pre1(1073741958, "1.20-pre1"),
+    V23w18a(1073741957, "23w18a"),
+    V23w17a(1073741956, "23w17a"),
+    V23w16a(1073741955, "23w16a"),
+    V23w14a(1073741954, "23w14a"),
+    V23w13a_or_b(1073741953, "23w13a_or_b"),
+    V23w13a(1073741952, "23w13a"),
+    V23w12a(1073741951, "23w12a"),
+    V1_19_4(762, "1.19.4"),
+    V1_19_4rc3(1073741950, "1.19.4-rc3"),
+    V1_19_4rc2(1073741949, "1.19.4-rc2"),
+    V1_19_4rc1(1073741948, "1.19.4-rc1"),
+    V1_19_4pre4(1073741947, "1.19.4-pre4"),
+    V1_19_4pre3(1073741946, "1.19.4-pre3"),
+    V1_19_4pre2(1073741945, "1.19.4-pre2"),
+    V1_19_4pre1(1073741944, "1.19.4-pre1"),
+    V23w07a(1073741943, "23w07a"),
+    V23w06a(1073741942, "23w06a"),
+    V23w05a(1073741941, "23w05a"),
+    V23w04a(1073741940, "23w04a"),
+    V23w03a(1073741939, "23w03a"),
+    V1_19_3(761, "1.19.3"),
+    V1_19_3rc3(1073741938, "1.19.3-rc3"),
+    V1_19_3rc2(1073741937, "1.19.3-rc2"),
+    V1_19_3rc1(1073741936, "1.19.3-rc1"),
+    V1_19_3pre3(1073741935, "1.19.3-pre3"),
+    V1_19_3pre2(1073741934, "1.19.3-pre2"),
+    V1_19_3pre1(1073741933, "1.19.3-pre1"),
+    V22w46a(1073741932, "22w46a"),
+    V22w45a(1073741931, "22w45a"),
+    V22w44a(1073741930, "22w44a"),
+    V22w43a(1073741929, "22w43a"),
+    V22w42a(1073741928, "22w42a"),
+    V1_19_2(760, "1.19.2"),
+    V1_19_2rc2(1073741927, "1.19.2-rc2"),
+    V1_19_2rc1(1073741926, "1.19.2-rc1"),
+    V1_19_1(760, "1.19.1"),
+    V1_19_1rc3(1073741925, "1.19.1-rc3"),
+    V1_19_1rc2(1073741924, "1.19.1-rc2"),
+    V1_19_1pre6(1073741923, "1.19.1-pre6"),
+    V1_19_1pre5(1073741922, "1.19.1-pre5"),
+    V1_19_1pre4(1073741921, "1.19.1-pre4"),
+    V1_19_1pre3(1073741920, "1.19.1-pre3"),
+    V1_19_1pre2(1073741919, "1.19.1-pre2"),
+    V1_19_1rc1(1073741918, "1.19.1-rc1"),
+    V1_19_1pre1(1073741917, "1.19.1-pre1"),
+    V22w24a(1073741916, "22w24a"),
+    V1_19(759, "1.19"),
+    V1_19rc2(1073741915, "1.19-rc2"),
+    V1_19rc1(1073741914, "1.19-rc1"),
+    V1_19pre5(1073741913, "1.19-pre5"),
+    V1_19pre4(1073741912, "1.19-pre4"),
+    V1_19pre3(1073741911, "1.19-pre3"),
+    V1_19pre2(1073741910, "1.19-pre2"),
+    V1_19pre1(1073741909, "1.19-pre1"),
+    V22w19a(1073741908, "22w19a"),
     V22w18a(1073741907, "22w18a"),
     V22w17a(1073741906, "22w17a"),
     V22w16b(1073741905, "22w16b"),
@@ -47,11 +229,12 @@ public enum PVersion {
     V22w06a(1073741891, "22w06a"),
     V22w05a(1073741890, "22w05a"),
     V22w03a(1073741889, "22w03a"),
-    V1_18_or_1_18_1(757, "1.18_or_1.18.1"),
+    V1_18_1(757, "1.18.1"),
     V1_18_1rc3(1073741888, "1.18.1-rc3"),
     V1_18_1rc2(1073741887, "1.18.1-rc2"),
     V1_18_1rc1(1073741886, "1.18.1-rc1"),
     V1_18_1pre1(1073741885, "1.18.1-pre1"),
+    V1_18(757, "1.18"),
     V1_18rc4(1073741884, "1.18-rc4"),
     V1_18rc3(1073741883, "1.18-rc3"),
     V1_18rc2(1073741882, "1.18-rc2"),
@@ -110,13 +293,14 @@ public enum PVersion {
     V21w05b(1073741837, "21w05b"),
     V21w05a(1073741836, "21w05a"),
     V21w03a(1073741835, "21w03a"),
-    V1_16_4_or_5(754, "1.16.4_or_1.16.5"),
+    V1_16_5(754, "1.16.5"),
     V1_16_5rc1(1073741834, "1.16.5-rc1"),
     V20w51a(1073741833, "20w51a"),
     V20w49a(1073741832, "20w49a"),
     V20w48a(1073741831, "20w48a"),
     V20w46a(1073741830, "20w46a"),
     V20w45a(1073741829, "20w45a"),
+    V1_16_4(754, "1.16.4"),
     V1_16_4rc1(1073741827, "1.16.4-rc1"),
     V1_16_4pre2(1073741826, "1.16.4-pre2"),
     V1_16_4pre1(1073741825, "1.16.4-pre1"),
@@ -316,7 +500,8 @@ public enum PVersion {
     V17w43b(342, "17w43b"),
     V17w43a(341, "17w43a"),
     V1_12_2(340, "1.12.2"),
-    V1_12_2pre(339, "1.12.2-pre"),
+    V1_12_2pre2(339, "1.12.2-pre2"),
+    V1_12_2pre1(339, "1.12.2-pre1"),
     V1_12_1(338, "1.12.1"),
     V1_12_1pre1(337, "1.12.1-pre1"),
     V17w31a(336, "17w31a"),
@@ -339,10 +524,13 @@ public enum PVersion {
     V17w13b(319, "17w13b"),
     V17w13a(318, "17w13a"),
     V17w06a(317, "17w06a"),
-    V1_11_X(316, "1.11.x_or_16w50a"),
+    V1_11_2(316, "1.11.2"),
+    V1_11_1(316, "1.11.1"),
+    V16w50a(316, "16w50a"),
     V1_11(315, "1.11"),
     V1_11pre1(314, "1.11-pre1"),
-    V16w43a_or_44a(313, "16w43a_or_44a"),
+    V16w44a(313, "16w44a"),
+    V16w43a(313, "16w43a"),
     V16w42a(312, "16w42a"),
     V16w41a(311, "16w41a"),
     V16w40a(310, "16w40a"),
@@ -359,25 +547,42 @@ public enum PVersion {
     private final int PV;
     private final String GV;
 
+    // 静态映射表，PVcode -> List<PVersion>
+    private static final Map<Integer, List<PVersion>> PV_TO_VERSIONS_MAP = new HashMap<>();
+
+    static {
+        for (PVersion version : PVersion.values()) {
+            PV_TO_VERSIONS_MAP
+                    .computeIfAbsent(version.PV, k -> new ArrayList<>())
+                    .add(version);
+        }
+    }
+
     PVersion(int PV, String GV) {
         this.GV = GV;
         this.PV = PV;
     }
 
-    public static PVersion getByCode(int PVcode) {
-        for (PVersion item : PVersion.values()) {
-            if (item.PV == PVcode) {
-                return item;
-            }
-        }
-        return null;
+    /**
+     * Gets all PVersion instances that match the given PVcode
+     *
+     * @param PVcode protocol version number
+     * @return list of matching PVersion instances
+     */
+    public static List<PVersion> getByCode(int PVcode) {
+        return PV_TO_VERSIONS_MAP.getOrDefault(PVcode, Collections.emptyList());
     }
 
-    public static String getGV(int PVcode) {
-        PVersion byCode = getByCode(PVcode);
-        if (byCode == null) {
-            return "";
-        }
-        return byCode.GV;
+    /**
+     * Gets all GV strings that match the given PVcode
+     *
+     * @param PVcode protocol version number
+     * @return list of matching GV strings
+     */
+    public static List<String> getGV(int PVcode) {
+        List<PVersion> versions = getByCode(PVcode);
+        return versions.stream()
+                .map(version -> version.GV)
+                .collect(Collectors.toList());
     }
 }

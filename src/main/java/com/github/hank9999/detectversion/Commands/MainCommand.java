@@ -12,6 +12,8 @@ import com.viaversion.viaversion.api.Via;
 import java.util.Collections;
 import java.util.List;
 
+import static com.github.hank9999.detectversion.Libs.Libs.GVsToString;
+
 public class MainCommand implements TabExecutor {
     @Override
     final public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -33,8 +35,9 @@ public class MainCommand implements TabExecutor {
             if (playerName.equalsIgnoreCase("*")) {
                 for (Player p : DetectVersion.ins.getServer().getOnlinePlayers()) {
                     if (p != null) {
-                        String GV = PVersion.getGV(Via.getAPI().getPlayerVersion(p.getUniqueId()));
-                        commandSender.sendMessage(Libs.color("&b" + p.getName() + "&9 Client Version is &6" + GV));
+                        List<String> GVs = PVersion.getGV(Via.getAPI().getPlayerVersion(p.getUniqueId()));
+
+                        commandSender.sendMessage(Libs.color("&b" + p.getName() + "&9 Client Version is &6" + GVsToString(GVs)));
                     }
                 }
 
@@ -46,8 +49,9 @@ public class MainCommand implements TabExecutor {
                     return false;
                 }
 
-                String GV = PVersion.getGV(Via.getAPI().getPlayerVersion(p.getUniqueId()));
-                commandSender.sendMessage(Libs.color("&b" + playerName + "&9 Client Version is &6" + GV));
+                List<String> GVs = PVersion.getGV(Via.getAPI().getPlayerVersion(p.getUniqueId()));
+
+                commandSender.sendMessage(Libs.color("&b" + playerName + "&9 Client Version is &6" + GVsToString(GVs)));
             }
         }
         return true;
