@@ -23,8 +23,17 @@ public class JoinListener implements Listener {
         List<String> GVs = PVersion.getGV(Via.getAPI().getPlayerVersion(p.getUniqueId()));
         DetectVersion.ins.getServer().broadcast(ChatColor.AQUA + p.getName() + ChatColor.YELLOW + " Joined Server" + ChatColor.WHITE + "," + ChatColor.GREEN + " Client Version: " + ChatColor.DARK_AQUA + GVsToString(GVs), "MiaoChatTransformation.broadcast");
         DetectVersion.ins.getServer().getLogger().info(ChatColor.AQUA + p.getName() + ChatColor.YELLOW + " Joined Server" + ChatColor.WHITE + "," + ChatColor.GREEN + " Client Version: " + ChatColor.DARK_AQUA + GVsToString(GVs));
-        boolean isRecommended = Config.RecommendedVersion.stream()
-                .anyMatch(recommendedVersion -> GVs.stream().anyMatch(recommendedVersion::contains));
+        boolean isRecommended = false;
+
+        for (String version : Config.RecommendedVersion) {
+            for (String Gv : GVs) {
+                if (Gv.equalsIgnoreCase(version)) {
+                    isRecommended = true;
+                    break;
+                }
+            }
+        }
+
         if (!isRecommended) {
             if (Config.VersionNotMatchFunction.equalsIgnoreCase("Messages")) {
                 (new BukkitRunnable() {
