@@ -6,7 +6,7 @@
 
     <groupId>com.github.hank9999</groupId>
     <artifactId>DetectVersion</artifactId>
-    <version>1.0.5</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>DetectVersion</name>
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>com.viaversion</groupId>
             <artifactId>viaversion-api</artifactId>
-            <version>LATEST</version>
+            <version>4.2.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
